@@ -1,0 +1,274 @@
+<!-- 综合习惯打卡页面（润肤 + 营养补剂） -->
+<view class="page-container">
+  
+  <!-- ===== 顶部概览 ===== -->
+  <view class="card header-card">
+    <view class="header-top">
+      <text class="header-icon">🌿</text>
+      <text class="header-title">日常习惯打卡</text>
+    </view>
+    <view class="header-stats">
+      <view class="stat-block">
+        <text class="stat-num">{{continuousDays}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-block">
+        <text class="stat-num">{{totalDays}}</text>
+        <text class="stat-label">总打卡</text>
+      </view>
+      <view class="stat-block">
+        <text class="stat-num">{{monthDays}}</text>
+        <text class="stat-label">本月</text>
+      </view>
+      <view class="stat-block">
+        <text class="stat-num">{{todaySuppRate}}%</text>
+        <text class="stat-label">补剂完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== Tab 切换 ===== -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'skincare' ? 'active' : ''}}" bindtap="switchTab" data-tab="skincare">
+      <text class="tab-icon">🧴</text>
+      <text class="tab-label">润肤护理</text>
+    </view>
+    <view class="tab-item {{activeTab === 'supplement' ? 'active' : ''}}" bindtap="switchTab" data-tab="supplement">
+      <text class="tab-icon">🧪</text>
+      <text class="tab-label">营养补剂</text>
+      <text wx:if="{{todaySuppRate < 100}}" class="tab-badge-dot"></text>
+    </view>
+  </view>
+
+  <!-- ================================ -->
+  <!-- Tab 1: 润肤护理 -->
+  <!-- ================================ -->
+  <view wx:if="{{activeTab === 'skincare'}}">
+    
+    <!-- 今日润肤打卡 -->
+    <view class="card today-card">
+      <view class="checkin-row {{todayMorning ? 'done' : ''}}" bindtap="doMorningCheckIn">
+        <view class="checkin-left">
+          <text class="checkin-time">🌅 早晨 · 09:00</text>
+          <text class="checkin-label">起床后润肤，开启清爽一天</text>
+        </view>
+        <view class="checkin-right">
+          <text wx:if="{{todayMorning}}" class="checkin-done">✅ {{morningTime}}</text>
+          <text wx:else class="checkin-btn">去打卡 →</text>
+        </view>
+      </view>
+      <view class="checkin-divider"></view>
+      <view class="checkin-row {{todayEvening ? 'done' : ''}}" bindtap="doEveningCheckIn">
+        <view class="checkin-left">
+          <text class="checkin-time">🌙 晚间 · 21:00</text>
+          <text class="checkin-label">洗澡后3分钟内涂抹，锁住水分</text>
+        </view>
+        <view class="checkin-right">
+          <text wx:if="{{todayEvening}}" class="checkin-done">✅ {{eveningTime}}</text>
+          <text wx:else class="checkin-btn">去打卡 →</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 润肤小贴士 -->
+    <view class="card tips-card card-green">
+      <view class="tips-title">💡 润肤小贴士</view>
+      <view class="tip-item">• 洗澡后3分钟内涂抹，是锁水黄金期</view>
+      <view class="tip-item">• 选择无香精、无色素、成分简单的润肤霜</view>
+      <view class="tip-item">• 含神经酰胺、尿素、甘油的成分对银屑病友好</view>
+      <view class="tip-item">• 水温控制在37-40℃，不宜过热</view>
+    </view>
+
+    <!-- 本月打卡日历 -->
+    <view class="section-title">本月打卡日历</view>
+    <view class="card calendar-card">
+      <view class="calendar-header">
+        <text class="calendar-month">{{year}}年{{month}}月</text>
+      </view>
+      <view class="calendar-weekdays">
+        <text wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="index" class="weekday">{{item}}</text>
+      </view>
+      <view class="calendar-days">
+        <view wx:for="{{calendarDays}}" wx:key="index" class="calendar-day {{item.isEmpty ? 'empty' : ''}} {{item.isToday ? 'today' : ''}}">
+          <text class="day-num">{{item.day || ''}}</text>
+          <view wx:if="{{!item.isEmpty}}" class="day-checkin-dots">
+            <text class="dot morning {{item.morning ? 'active' : ''}}"></text>
+            <text class="dot evening {{item.evening ? 'active' : ''}}"></text>
+          </view>
+        </view>
+      </view>
+      <view class="calendar-legend">
+        <view class="legend-item"><text class="dot morning active"></text> 早</view>
+        <view class="legend-item"><text class="dot evening active"></text> 晚</view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ================================ -->
+  <!-- Tab 2: 营养补剂 -->
+  <!-- ================================ -->
+  <view wx:if="{{activeTab === 'supplement'}}">
+    
+    <!-- 补剂完成进度 -->
+    <view class="card supp-progress-card">
+      <view class="supp-progress-header">
+        <text class="supp-progress-title">今日补剂完成</text>
+        <text class="supp-progress-num">{{todaySuppRate}}%</text>
+      </view>
+      <view class="supp-progress-bar-bg">
+        <view class="supp-progress-bar" style="width: {{todaySuppRate}}%"></view>
+      </view>
+      <text class="supp-progress-tip">
+        <text wx:if="{{todaySuppRate === 100}}">🎉 今日所有补剂已打卡！</text>
+        <text wx:elif="{{todaySuppRate > 0}}">继续加油，还有补剂未打卡~</text>
+        <text wx:else>今天还没有补剂打卡记录，开始吧 💪</text>
+      </text>
+    </view>
+
+    <!-- 管理补剂按钮 -->
+    <view class="supp-manage-bar">
+      <view class="supp-manage-btn" bindtap="openSuppManage">
+        <text>⚙️ 管理我的补剂</text>
+      </view>
+      <view class="supp-manage-btn" bindtap="openReminderSettings">
+        <text>⏰ 提醒设置</text>
+      </view>
+    </view>
+
+    <!-- 当前待打卡提醒（如果有） -->
+    <view wx:if="{{activeReminder}}" class="card reminder-alert-card">
+      <view class="reminder-alert-content">
+        <text class="reminder-alert-icon">🔔</text>
+        <view class="reminder-alert-text">
+          <text class="reminder-alert-title">{{activeReminder.label}} 时间到了！</text>
+          <text class="reminder-alert-desc">现在是 {{activeReminder.time}}，别忘了补剂哦</text>
+        </view>
+        <text class="reminder-alert-close" bindtap="dismissReminder">✕</text>
+      </view>
+    </view>
+
+    <!-- 补剂列表 -->
+    <view class="section-title">我的营养补剂</view>
+    
+    <view wx:if="{{todaySupplements.length === 0}}" class="card empty-supp-card">
+      <text class="empty-supp-text">还没有添加补剂，先去管理吧 📋</text>
+    </view>
+
+    <view wx:for="{{todaySupplements}}" wx:key="id" class="card supp-item-card" data-suppid="{{item.id}}" bindtap="toggleSupplement">
+      <view class="supp-item-icon" style="background: {{item.color || '#81C784'}}20; border-color: {{item.color || '#81C784'}}">
+        <text>{{item.icon || '💊'}}</text>
+      </view>
+      <view class="supp-item-info">
+        <text class="supp-item-name">{{item.name}}</text>
+        <text class="supp-item-detail">{{item.dosage}} · {{item.time}}</text>
+      </view>
+      <view class="supp-item-status {{item.taken ? 'taken' : ''}}">
+        <text wx:if="{{item.taken}}" class="supp-taken-badge">✅ {{item.takenTime ? util.formatTime(new Date(item.takenTime)) : '已吃'}}</text>
+        <text wx:else class="supp-untaken-badge">未吃 →</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ============================================================ -->
+  <!-- 弹窗：补剂管理 -->
+  <!-- ============================================================ -->
+  <view class="modal-overlay {{showSuppManage ? '' : 'hidden'}}" bindtap="closeSuppManage">
+    <view class="modal-dialog supp-manage-modal" catchtap="stopPropagation">
+      
+      <view class="modal-header">
+        <text class="modal-title">⚙️ 管理我的补剂</text>
+        <text class="modal-close" bindtap="closeSuppManage">✕</text>
+      </view>
+
+      <!-- 编辑状态 -->
+      <view wx:if="{{editingSupp}}" class="edit-supp-section">
+        <view class="edit-supp-field">
+          <text class="edit-supp-label">补剂名称</text>
+          <input class="edit-supp-input" placeholder="如：维生素D" value="{{editingSupp.name}}" bindinput="inputEditSuppName" />
+        </view>
+        <view class="edit-supp-field">
+          <text class="edit-supp-label">剂量</text>
+          <input class="edit-supp-input" placeholder="如：1000 IU" value="{{editingSupp.dosage}}" bindinput="inputEditSuppDosage" />
+        </view>
+        <view class="edit-supp-field">
+          <text class="edit-supp-label">服用时间</text>
+          <input class="edit-supp-input" placeholder="如：早餐后" value="{{editingSupp.time}}" bindinput="inputEditSuppTime" />
+        </view>
+        <view class="edit-supp-field">
+          <text class="edit-supp-label">选择图标</text>
+          <view class="icon-picker">
+            <text wx:for="{{['☀️','🐟','🦠','🌿','⚡','💊','🧬','🧪','🌸','🥛','🥬','🍊']}}" wx:key="index" 
+                  class="icon-option {{editingSupp.icon === item ? 'active' : ''}}" 
+                  data-icon="{{item}}" bindtap="selectSuppIcon">{{item}}</text>
+          </view>
+        </view>
+        <view class="edit-supp-actions">
+          <view class="btn-outline small" bindtap="cancelEditSupp">取消</view>
+          <view class="btn-primary small" bindtap="saveEditSupp">保存</view>
+        </view>
+      </view>
+
+      <!-- 补剂列表（非编辑状态） -->
+      <view wx:else class="supp-list-edit">
+        <view wx:for="{{supplementConfigs}}" wx:key="id" class="supp-edit-row">
+          <view class="supp-edit-left">
+            <text class="supp-edit-icon">{{item.icon || '💊'}}</text>
+            <view class="supp-edit-info">
+              <text class="supp-edit-name">{{item.name || '未命名'}}</text>
+              <text class="supp-edit-detail">{{item.dosage}} · {{item.time}}</text>
+            </view>
+          </view>
+          <view class="supp-edit-actions">
+            <text class="supp-edit-btn {{item.enabled ? 'active' : ''}}" bindtap="toggleSuppEnabled" data-suppid="{{item.id}}">
+              {{item.enabled ? '启用' : '停用'}}
+            </text>
+            <text class="supp-edit-btn edit" bindtap="editSupplement" data-suppid="{{item.id}}">编辑</text>
+            <text class="supp-edit-btn delete" bindtap="deleteSupplement" data-suppid="{{item.id}}">删除</text>
+          </view>
+        </view>
+        <view class="supp-add-row" bindtap="addSupplement">
+          <text class="supp-add-icon">+</text>
+          <text class="supp-add-text">添加新补剂</text>
+        </view>
+      </view>
+      
+    </view>
+  </view>
+
+  <!-- ============================================================ -->
+  <!-- 弹窗：提醒设置 -->
+  <!-- ============================================================ -->
+  <view class="modal-overlay {{showReminderSettings ? '' : 'hidden'}}" bindtap="closeReminderSettings">
+    <view class="modal-dialog reminder-modal" catchtap="stopPropagation">
+      
+      <view class="modal-header">
+        <text class="modal-title">⏰ 补剂提醒设置</text>
+        <text class="modal-close" bindtap="closeReminderSettings">✕</text>
+      </view>
+
+      <view class="reminder-tip-text">开启提醒后，在打卡页面会显示待办提醒</view>
+
+      <view wx:for="{{suppReminderTimes}}" wx:key="id" class="reminder-row">
+        <view class="reminder-left">
+          <text class="reminder-icon">{{item.id === 'morning' ? '🌅' : item.id === 'lunch' ? '☀️' : '🌙'}}</text>
+          <view class="reminder-info">
+            <text class="reminder-label">{{item.label}}</text>
+            <text class="reminder-time">{{item.time}}</text>
+          </view>
+        </view>
+        <view class="reminder-right">
+          <switch checked="{{item.enabled}}" color="#B39DDB" data-rtid="{{item.id}}" bindchange="toggleReminder" />
+        </view>
+      </view>
+
+      <view class="reminder-subscribe" bindtap="subscribeReminder">
+        <text>🔔 开启微信推送提醒</text>
+      </view>
+      
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

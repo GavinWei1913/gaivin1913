@@ -1,0 +1,231 @@
+/* ===== AI对话页样式 ===== */
+
+.chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color);
+}
+
+/* 顶部 */
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.back-btn {
+  font-size: var(--font-sm);
+  color: var(--primary-color);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+}
+
+.chat-header-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.chat-avatar {
+  font-size: 28px;
+}
+
+.chat-partner {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-name {
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+.chat-status {
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+.chat-status.online {
+  color: var(--success-color);
+}
+
+.chat-remaining {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  background: var(--bg-color);
+  padding: 2px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* 隐私提示 */
+.privacy-notice {
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-light);
+  padding: var(--spacing-xs) 0;
+  background: var(--card-bg);
+  flex-shrink: 0;
+}
+
+/* 消息列表 */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.message-list {
+  padding: var(--spacing-lg);
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: var(--spacing-lg);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.message-row.user {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin: 0 var(--spacing-sm);
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.ai-bubble {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-top-left-radius: 4px;
+}
+
+.user-bubble {
+  background: var(--primary-color);
+  color: #fff;
+  border-top-right-radius: 4px;
+}
+
+.message-disclaimer {
+  font-size: 9px;
+  color: var(--text-light);
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-xs);
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.user-bubble .message-disclaimer {
+  display: none;
+}
+
+/* 打字动画 */
+.typing {
+  display: flex;
+  gap: 2px;
+  padding: var(--spacing-lg);
+}
+
+.typing-dot {
+  font-size: 24px;
+  line-height: 0;
+  animation: typingDot 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% { opacity: 0.2; }
+  30% { opacity: 1; }
+}
+
+/* 输入区 */
+.chat-input-area {
+  flex-shrink: 0;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom, 0));
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-input-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg-color);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.chat-input {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  font-size: var(--font-sm);
+  padding: 0 var(--spacing-sm);
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.chat-send-btn {
+  width: 52px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-sm);
+  color: var(--text-light);
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.chat-send-btn.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.chat-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-xs);
+  padding: 0 var(--spacing-xs);
+}
+
+.tool-btn {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tool-count {
+  font-size: 10px;
+  color: var(--text-light);
+}

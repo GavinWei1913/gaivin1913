@@ -1,0 +1,237 @@
+/* ===== 疗愈页样式 ===== */
+
+/* AI对话卡片 */
+.ai-chat-card {
+  margin-top: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-chat-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(179, 157, 219, 0.15);
+}
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.ai-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(179, 157, 219, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-right: var(--spacing-md);
+  position: relative;
+}
+
+.ai-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success-color);
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  border: 2px solid var(--card-bg);
+}
+
+.ai-info {
+  flex: 1;
+}
+
+.ai-name {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.ai-desc {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.ai-chat-count {
+  font-size: var(--font-xs);
+  color: var(--purple-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.ai-btn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.ai-disclaimer {
+  font-size: 10px;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* 呼吸练习 */
+.breathe-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(46, 125, 91, 0.05), var(--card-bg));
+}
+
+.breathe-card:active {
+  opacity: 0.8;
+}
+
+.breathe-content {
+  display: flex;
+  align-items: center;
+}
+
+.breathe-icon {
+  font-size: 36px;
+  margin-right: var(--spacing-lg);
+}
+
+.breathe-title {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.breathe-desc {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.breathe-arrow {
+  color: var(--text-light);
+  font-size: var(--font-lg);
+}
+
+/* 音频列表 */
+.audio-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.audio-card:active {
+  opacity: 0.8;
+}
+
+.audio-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.audio-icon {
+  font-size: 32px;
+  margin-right: var(--spacing-lg);
+  width: 44px;
+  text-align: center;
+}
+
+.audio-text {
+  flex: 1;
+}
+
+.audio-title {
+  font-size: var(--font-md);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.audio-desc {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.audio-duration {
+  font-size: 10px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.audio-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-md);
+  flex-shrink: 0;
+}
+
+.audio-play-btn.playing {
+  background: var(--purple-color);
+  color: #fff;
+}
+
+/* 心情日记 */
+.diary-card {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: var(--spacing-sm);
+}
+
+.diary-card:active {
+  opacity: 0.8;
+}
+
+.diary-icon {
+  font-size: 32px;
+  margin-right: var(--spacing-lg);
+}
+
+.diary-text {
+  flex: 1;
+}
+
+.diary-title {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.diary-desc {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.diary-arrow {
+  color: var(--text-light);
+  font-size: var(--font-lg);
+}
+
+/* 底部免责 */
+.heal-disclaimer {
+  margin: var(--spacing-xl) var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(229, 115, 115, 0.08);
+  border-radius: var(--radius-md);
+  font-size: 10px;
+  color: var(--text-light);
+  line-height: 1.6;
+}

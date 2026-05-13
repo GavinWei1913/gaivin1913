@@ -1,0 +1,27 @@
+<!-- 文章详情 -->
+<view class="page-container article-detail">
+  
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <text class="page-title">文章详情</text>
+    <view class="action-btn" bindtap="toggleFavorite">
+      <text>{{isFavorited ? '❤️' : '🤍'}}</text>
+    </view>
+  </view>
+
+  <view class="article-body">
+    <view class="article-header">
+      <view class="article-category-tag tag tag-green">{{article.category}}</view>
+      <text class="article-detail-title">{{article.title}}</text>
+      <view class="article-meta-info">
+        <text>👁️ {{article.readCount}} 阅读</text>
+      </view>
+    </view>
+
+    <view class="article-content-text">
+      <text>{{article.content}}</text>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

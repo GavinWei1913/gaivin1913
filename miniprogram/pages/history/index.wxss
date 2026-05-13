@@ -1,0 +1,196 @@
+/* ===== 历史记录样式 ===== */
+
+/* 趋势卡片 */
+.trend-card {
+  text-align: center;
+}
+
+.trend-month {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-xl);
+}
+
+.trend-nav {
+  font-size: 28px;
+  color: var(--primary-color);
+  padding: 0 var(--spacing-sm);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.trend-month-text {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.trend-stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.trend-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trend-stat-value {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.trend-stat-label {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* 日历 */
+.calendar-card {
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.weekday {
+  font-size: var(--font-xs);
+  color: var(--text-light);
+  padding: var(--spacing-xs);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day.good {
+  background: rgba(46, 125, 91, 0.08);
+}
+
+.calendar-day.normal {
+  background: rgba(255, 183, 77, 0.08);
+}
+
+.calendar-day.bad {
+  background: rgba(229, 115, 115, 0.08);
+}
+
+.day-number {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.day-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  position: absolute;
+  bottom: 4px;
+}
+
+/* 日详情 */
+.day-detail-card {
+  margin-top: var(--spacing-sm);
+}
+
+.day-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.day-detail-date {
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+.day-detail-score {
+  font-size: var(--font-sm);
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.day-detail-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.day-detail-item {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+/* 记录列表 */
+.record-list-card {
+  padding: 0;
+}
+
+.record-list-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.record-list-item:last-child {
+  border-bottom: none;
+}
+
+.record-list-item:active {
+  background: var(--bg-color);
+}
+
+.rl-date {
+  flex: 1;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+}
+
+.rl-score {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  margin-right: var(--spacing-lg);
+  min-width: 40px;
+  text-align: right;
+}
+
+.rl-status {
+  font-size: var(--font-xs);
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: var(--bg-color);
+  color: var(--text-secondary);
+  min-width: 50px;
+  text-align: center;
+}

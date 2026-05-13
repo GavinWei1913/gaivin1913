@@ -1,0 +1,140 @@
+/* ===== 呼吸练习页样式 ===== */
+
+.breathe-page {
+  height: 100vh;
+  background: linear-gradient(135deg, #E8F5E9 0%, #F3E5F5 50%, #E0F7FA 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 80px;
+}
+
+.breathe-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top, 20px));
+}
+
+.breathe-back {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.breathe-title {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 呼吸动画 */
+.breathe-animation {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.breathe-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(46, 125, 91, 0.2), rgba(179, 157, 219, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 4s ease-in-out;
+  box-shadow: 0 0 60px rgba(46, 125, 91, 0.15);
+}
+
+.breathe-circle.inhale {
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(46, 125, 91, 0.3), rgba(179, 157, 219, 0.4));
+  box-shadow: 0 0 80px rgba(46, 125, 91, 0.25);
+}
+
+.breathe-circle.exhale {
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, rgba(46, 125, 91, 0.15), rgba(179, 157, 219, 0.2));
+  box-shadow: 0 0 40px rgba(46, 125, 91, 0.1);
+}
+
+.breathe-inner-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--purple-color));
+  opacity: 0.6;
+}
+
+.breathe-guide-text {
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: 32px;
+}
+
+/* 计时 */
+.breathe-timer {
+  margin: var(--spacing-lg) 0;
+}
+
+.breathe-time {
+  font-size: 48px;
+  font-weight: 200;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 控制按钮 */
+.breathe-controls {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.breathe-btn {
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: 30px;
+  font-size: var(--font-md);
+  cursor: pointer;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+}
+
+.breathe-btn:active {
+  transform: scale(0.95);
+}
+
+.breathe-btn.play {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.breathe-btn.pause {
+  background: var(--purple-color);
+  color: #fff;
+}
+
+.breathe-btn.reset {
+  background: var(--card-bg);
+  color: var(--text-secondary);
+}
+
+.breathe-tips {
+  padding: 0 var(--spacing-xl);
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--text-light);
+  line-height: 1.6;
+}

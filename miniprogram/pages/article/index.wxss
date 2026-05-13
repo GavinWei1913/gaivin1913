@@ -1,0 +1,53 @@
+/* ===== 文章详情样式 ===== */
+
+.article-detail {
+  background: var(--card-bg);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+.action-btn {
+  font-size: var(--font-lg);
+  cursor: pointer;
+  min-width: 40px;
+  text-align: right;
+}
+
+.article-body {
+  padding: var(--spacing-lg);
+}
+
+.article-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.article-category-tag {
+  margin-bottom: var(--spacing-sm);
+}
+
+.article-detail-title {
+  display: block;
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: var(--spacing-sm);
+}
+
+.article-meta-info {
+  font-size: var(--font-xs);
+  color: var(--text-light);
+}
+
+.article-content-text {
+  font-size: var(--font-md);
+  color: var(--text-primary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}

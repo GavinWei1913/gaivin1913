@@ -1,0 +1,41 @@
+<!-- 5分钟正念呼吸 -->
+<view class="breathe-page" bindtap="toggleBreathe">
+  
+  <!-- 顶部 -->
+  <view class="breathe-header">
+    <view class="breathe-back" bindtap="goBack" catchtap="stopPropagation">
+      <text>← 返回</text>
+    </view>
+    <text class="breathe-title">5分钟正念呼吸</text>
+    <view class="breathe-back"></view>
+  </view>
+
+  <!-- 呼吸动画 -->
+  <view class="breathe-animation">
+    <view class="breathe-circle {{isBreathing ? (isInhale ? 'inhale' : 'exhale') : ''}}">
+      <view class="breathe-inner-circle"></view>
+    </view>
+    <text class="breathe-guide-text">{{guideText}}</text>
+  </view>
+
+  <!-- 计时 -->
+  <view class="breathe-timer">
+    <text class="breathe-time">{{formattedTime}}</text>
+  </view>
+
+  <!-- 控制按钮 -->
+  <view class="breathe-controls">
+    <view class="breathe-btn {{isBreathing ? 'pause' : 'play'}}" bindtap="toggleBreathe" catchtap="stopPropagation">
+      <text>{{isBreathing ? '⏸ 暂停' : '▶ 开始'}}</text>
+    </view>
+    <view class="breathe-btn reset" bindtap="resetBreathe" catchtap="stopPropagation" wx:if="{{isBreathing || elapsedSeconds > 0}}">
+      <text>↺ 重置</text>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="breathe-tips">
+    <text>找一个舒适的姿势坐下，跟随圆球的节奏呼吸</text>
+  </view>
+
+</view>

@@ -1,0 +1,89 @@
+<!-- 个性化饮食问卷 -->
+<view class="page-container">
+  
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <text class="page-title">饮食评估</text>
+  </view>
+
+  <view class="card questionnaire-intro" wx:if="{{currentStep === 0}}">
+    <view class="intro-icon">🔬</view>
+    <view class="intro-title">个性化饮食方案评估</view>
+    <view class="intro-desc">
+      回答以下5个问题，我们将根据你的情况生成专属饮食红黑榜。
+      本建议基于排除法模型，仅供参考。
+    </view>
+    <view class="btn-primary block" bindtap="startQuestionnaire">开始回答</view>
+  </view>
+
+  <view wx:if="{{currentStep > 0 && currentStep <= totalSteps}}" class="question-step">
+    <!-- 进度 -->
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{ (currentStep-1) / totalSteps * 100 }}%"></view>
+    </view>
+    <text class="progress-text">问题 {{currentStep}} / {{totalSteps}}</text>
+
+    <!-- 问题卡片 -->
+    <view class="card question-card fade-in">
+      <view class="question-title">{{currentQuestion.title}}</view>
+      
+      <view class="question-options" wx:if="currentQuestion.type === 'single'">
+        <view class="option-item {{answers[getQuestionKey(currentStep)] === item.value ? 'active' : ''}}"
+              wx:for="{{currentQuestion.options}}" wx:key="value"
+              data-value="{{item.value}}" bindtap="selectOption">
+          <text class="option-label">{{item.label}}</text>
+          <view class="option-radio {{answers[getQuestionKey(currentStep)] === item.value ? 'checked' : ''}}"></view>
+        </view>
+      </view>
+
+      <view class="question-options" wx:if="currentQuestion.type === 'multi'">
+        <view class="option-item {{(answers[getQuestionKey(currentStep)] || []).includes(item.value) ? 'active' : ''}}"
+              wx:for="{{currentQuestion.options}}" wx:key="value"
+              data-value="{{item.value}}" bindtap="toggleMultiOption">
+          <text class="option-label">{{item.label}}</text>
+          <view class="option-checkbox {{(answers[getQuestionKey(currentStep)] || []).includes(item.value) ? 'checked' : ''}}">✓</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 按钮 -->
+    <view class="question-actions">
+      <view class="btn-primary block" bindtap="nextStep">
+        <text>{{currentStep === totalSteps ? '提交' : '下一题'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 结果页 -->
+  <view wx:if="{{showResult}}" class="result-page fade-in">
+    <view class="card result-card">
+      <view class="result-icon">🎉</view>
+      <view class="result-title">你的专属饮食方案已生成</view>
+      
+      <view class="result-section">
+        <view class="result-section-title green">✅ 建议多吃</view>
+        <view class="result-item" wx:for="{{result.eatMore}}" wx:key="index">
+          <text class="result-bullet">•</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+
+      <view class="result-section">
+        <view class="result-section-title red">❌ 建议避开</view>
+        <view class="result-item" wx:for="{{result.avoid}}" wx:key="index">
+          <text class="result-bullet red">•</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+
+      <view class="result-disclaimer">{{result.disclaimer}}</view>
+    </view>
+
+    <view class="result-actions">
+      <view class="btn-primary block" bindtap="saveAndBack">保存并返回</view>
+      <view class="btn-outline block" style="margin-top:12px" bindtap="restartQuestionnaire">重新评估</view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

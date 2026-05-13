@@ -1,0 +1,189 @@
+<!-- 健康报告页面 -->
+<view class="page-container">
+  
+  <!-- 顶部标题 -->
+  <view class="card header-card">
+    <view class="header-top">
+      <text class="header-icon">📊</text>
+      <text class="header-title">我的健康报告</text>
+    </view>
+    <text class="header-subtitle">基于你的病程记录和习惯打卡的综合评估报告</text>
+  </view>
+
+  <!-- 报告周期选择 -->
+  <view class="card period-card">
+    <view class="period-tabs">
+      <view class="period-tab {{period === 'month' ? 'active' : ''}}" bindtap="switchPeriod" data-period="month">本月</view>
+      <view class="period-tab {{period === 'quarter' ? 'active' : ''}}" bindtap="switchPeriod" data-period="quarter">近3月</view>
+      <view class="period-tab {{period === 'all' ? 'active' : ''}}" bindtap="switchPeriod" data-period="all">全部</view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="loading-spinner">⏳</view>
+    <text class="loading-text">正在生成报告...</text>
+  </view>
+
+  <!-- 报告内容 -->
+  <view wx:if="{{!loading && reportGenerated}}" class="report-content">
+    
+    <!-- 1. 总览 -->
+    <view class="card overview-report-card">
+      <view class="report-section-title">📋 报告总览</view>
+      <view class="overview-grid">
+        <view class="overview-item">
+          <text class="ov-num">{{reportData.totalDays}}</text>
+          <text class="ov-label">记录天数</text>
+        </view>
+        <view class="overview-item">
+          <text class="ov-num">{{reportData.averageScore}}</text>
+          <text class="ov-label">平均抗炎指数</text>
+        </view>
+        <view class="overview-item">
+          <text class="ov-num">{{reportData.checkInRate}}%</text>
+          <text class="ov-label">润肤打卡率</text>
+        </view>
+        <view class="overview-item">
+          <text class="ov-num">{{reportData.dietRate}}%</text>
+          <text class="ov-label">饮食合规率</text>
+        </view>
+        <view class="overview-item">
+          <text class="ov-num">{{reportData.suppRate}}%</text>
+          <text class="ov-label">补剂依从率</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2. 瘙痒趋势 -->
+    <view class="card trend-card">
+      <view class="report-section-title">😊 瘙痒趋势</view>
+      <view class="trend-description">
+        <text wx:if="{{reportData.itchTrend === 'improving'}}" class="trend-text trend-up">📈 瘙痒程度呈改善趋势，继续加油！</text>
+        <text wx:elif="{{reportData.itchTrend === 'worsening'}}" class="trend-text trend-down">📉 瘙痒程度有所加重，建议关注诱因</text>
+        <text wx:else class="trend-text trend-stable">➡️ 瘙痒程度保持稳定</text>
+      </view>
+      <view class="trend-chart-simple">
+        <view wx:for="{{reportData.itchChartData}}" wx:key="index" class="trend-bar-wrapper">
+          <view class="trend-bar" style="height: {{(5 - item.value) / 5 * 100}}%">
+            <text class="trend-bar-label">{{item.value}}</text>
+          </view>
+          <text class="trend-bar-date">{{item.shortDate}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 3. 皮损变化 -->
+    <view class="card trend-card">
+      <view class="report-section-title">📋 皮损面积变化</view>
+      <view class="area-stats">
+        <view class="area-stat-block">
+          <text class="area-stat-num green">{{reportData.improveDays}}</text>
+          <text class="area-stat-label">好转天数</text>
+        </view>
+        <view class="area-stat-block">
+          <text class="area-stat-num">{{reportData.stableDays}}</text>
+          <text class="area-stat-label">稳定天数</text>
+        </view>
+        <view class="area-stat-block">
+          <text class="area-stat-num red">{{reportData.worsenDays}}</text>
+          <text class="area-stat-label">加重天数</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4. 饮食合规 -->
+    <view class="card trend-card">
+      <view class="report-section-title">🍽️ 饮食执行情况</view>
+      <view class="diet-rate-bar-bg">
+        <view class="diet-rate-bar" style="width: {{reportData.dietRate}}%"></view>
+      </view>
+      <view class="diet-rate-text">饮食合规率 {{reportData.dietRate}}%</view>
+    </view>
+
+    <!-- 5. 心情趋势 -->
+    <view class="card trend-card">
+      <view class="report-section-title">😌 心情趋势</view>
+      <view class="mood-summary">
+        <text wx:if="{{reportData.moodTrend === 'improving'}}" class="trend-text trend-up">🌈 整体心情在变好，保持积极心态！</text>
+        <text wx:elif="{{reportData.moodTrend === 'worsening'}}" class="trend-text trend-down">🌧️ 近期情绪波动较大，可尝试疗愈模块</text>
+        <text wx:else class="trend-text trend-stable">⛅ 心情整体平稳</text>
+      </view>
+      <view class="mood-chart-simple">
+        <view wx:for="{{reportData.moodChartData}}" wx:key="index" class="mood-bar-wrapper">
+          <view class="mood-bar" style="height: {{(item.value + 1) / 5 * 100}}%">
+            <text class="mood-bar-emoji">{{item.emoji}}</text>
+          </view>
+          <text class="mood-bar-date">{{item.shortDate}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 6. 感染预警 -->
+    <view wx:if="{{reportData.infectionDays > 0}}" class="card trend-card card-warning">
+      <view class="report-section-title">⚠️ 感染预警</view>
+      <text class="warning-text">报告期内有 {{reportData.infectionDays}} 天记录了咽痛/感冒症状。感染是银屑病加重的重要诱因，请注意休息和防护。</text>
+    </view>
+
+    <!-- 7. 润肤打卡 -->
+    <view class="card trend-card">
+      <view class="report-section-title">🧴 润肤情况</view>
+      <view class="checkin-report">
+        <view class="checkin-stat">
+          <text class="checkin-stat-num">{{reportData.checkInDays}}</text>
+          <text class="checkin-stat-label">打卡天数</text>
+        </view>
+        <view class="checkin-stat">
+          <text class="checkin-stat-num">{{reportData.continuousCheckInDays}}</text>
+          <text class="checkin-stat-label">连续打卡</text>
+        </view>
+        <view class="checkin-stat">
+          <text class="checkin-stat-num">{{reportData.checkInRate}}%</text>
+          <text class="checkin-stat-label">打卡率</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 8. 新增：补剂依从性 -->
+    <view class="card trend-card" wx:if="{{reportData.suppDetailData && reportData.suppDetailData.length > 0}}">
+      <view class="report-section-title">💊 营养补剂依从性</view>
+      <view class="supp-report-summary">
+        <text class="supp-report-rate">{{reportData.suppRate}}%</text>
+        <text class="supp-report-label">整体依从率</text>
+      </view>
+      <view class="supp-report-detail">
+        <view wx:for="{{reportData.suppDetailData}}" wx:key="index" class="supp-report-item">
+          <view class="supp-report-item-left">
+            <text class="supp-report-icon">{{item.icon}}</text>
+            <text class="supp-report-name">{{item.name}}</text>
+          </view>
+          <view class="supp-report-item-right">
+            <view class="supp-report-bar-bg">
+              <view class="supp-report-bar" style="width: {{item.rate}}%"></view>
+            </view>
+            <text class="supp-report-percent">{{item.rate}}%（{{item.takenDays}}/{{item.totalDays}}天）</text>
+          </view>
+        </view>
+      </view>
+      <view class="report-tip">💡 规律补充有助于维持营养水平，促进皮肤修复</view>
+    </view>
+
+    <!-- 生成PDF按钮 -->
+    <view class="generate-pdf-section">
+      <view class="btn-primary block generate-btn" bindtap="generatePDF">
+        📄 生成PDF报告
+      </view>
+      <text class="generate-tip">PDF报告可保存到手机或分享给医生参考</text>
+    </view>
+
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:if="{{!loading && !reportGenerated && records.length === 0}}" class="empty-state">
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">还没有足够的记录数据<br/>坚持记录7天以上，报告会更完整</text>
+    <view class="btn-outline go-record-btn" bindtap="goRecord">去记录</view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

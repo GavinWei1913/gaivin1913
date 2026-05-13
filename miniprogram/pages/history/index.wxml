@@ -1,0 +1,81 @@
+<!-- 历史记录与趋势 -->
+<view class="page-container">
+  
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <text class="page-title">历史记录</text>
+  </view>
+
+  <!-- 月度趋势 -->
+  <view class="section-title">📈 月度趋势</view>
+  <view class="card trend-card">
+    <view class="trend-month">
+      <text class="trend-nav" bindtap="prevMonth">‹</text>
+      <text class="trend-month-text">{{year}}年{{month}}月</text>
+      <text class="trend-nav" bindtap="nextMonth">›</text>
+    </view>
+    
+    <!-- 趋势图（简化为文字统计） -->
+    <view class="trend-stats">
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{avgScore}}</text>
+        <text class="trend-stat-label">月均抗炎指数</text>
+      </view>
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{recordCount}}天</text>
+        <text class="trend-stat-label">记录天数</text>
+      </view>
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{goodDays}}天</text>
+        <text class="trend-stat-label">良好天数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日历视图 -->
+  <view class="section-title">📅 每日记录</view>
+  <view class="card calendar-card">
+    <!-- 星期标头 -->
+    <view class="calendar-weekdays">
+      <view class="weekday" wx:for="{{weekdays}}" wx:key="index">{{item}}</view>
+    </view>
+    
+    <!-- 日历网格 -->
+    <view class="calendar-grid">
+      <view class="calendar-day empty" wx:for="{{emptyDays}}" wx:key="index"></view>
+      <view class="calendar-day {{day.status}}" wx:for="{{days}}" wx:key="day" data-date="{{day.date}}" bindtap="showDayDetail">
+        <text class="day-number">{{day.number}}</text>
+        <text class="day-dot" wx:if="{{day.hasRecord}}"></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 某日详情 -->
+  <view wx:if="{{selectedDayDetail}}" class="card day-detail-card fade-in">
+    <view class="day-detail-header">
+      <text class="day-detail-date">{{selectedDayDetail.date}}</text>
+      <text class="day-detail-score">抗炎指数: {{selectedDayDetail.score}}</text>
+    </view>
+    <view class="day-detail-items">
+      <view class="day-detail-item">😊 瘙痒: {{selectedDayDetail.itchLabel}}</view>
+      <view class="day-detail-item">📋 皮损: {{selectedDayDetail.areaLabel}}</view>
+      <view class="day-detail-item">🍽️ 忌口: {{selectedDayDetail.dietLabel}}</view>
+      <view class="day-detail-item">😌 心情: {{selectedDayDetail.moodLabel}}</view>
+    </view>
+  </view>
+
+  <!-- 月度记录列表 -->
+  <view class="section-title">📋 月度记录清单</view>
+  <view class="card record-list-card">
+    <view class="record-list-item" wx:for="{{monthRecords}}" wx:key="date" bindtap="showDayDetail" data-date="{{item.date}}">
+      <text class="rl-date">{{item.date}}</text>
+      <text class="rl-score" style="color: {{item.score >= 60 ? 'var(--primary-color)' : item.score >= 40 ? 'var(--warning-color)' : 'var(--danger-color)'}}">{{item.score}}分</text>
+      <text class="rl-status">{{item.score >= 60 ? '良好' : item.score >= 40 ? '一般' : '需关注'}}</text>
+    </view>
+    <view class="empty-state" wx:if="{{monthRecords.length === 0}}">
+      <text class="empty-text">本月还没有记录</text>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

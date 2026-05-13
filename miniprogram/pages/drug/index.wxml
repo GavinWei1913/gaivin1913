@@ -1,0 +1,55 @@
+<!-- 药品认知专题页 -->
+<view class="page-container">
+  
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <text class="page-title">药品认知</text>
+  </view>
+
+  <!-- 激素等级表 -->
+  <view class="section-title">💊 激素强度分级表</view>
+  <view class="card">
+    <view class="hormone-table">
+      <view class="table-header">
+        <text class="th th-level">等级</text>
+        <text class="th th-class">分级</text>
+        <text class="th th-example">代表药物</text>
+        <text class="th th-risk">风险</text>
+      </view>
+      <view class="table-row" wx:for="{{hormoneLevels}}" wx:key="level">
+        <text class="td td-level">{{item.level}}</text>
+        <text class="td td-class">{{item.class}}</text>
+        <text class="td td-example">{{item.examples}}</text>
+        <text class="td td-risk">{{item.risk}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 国药准字查询入口 -->
+  <view class="card gov-card" bindtap="goNMPA">
+    <view class="gov-content">
+      <text class="gov-icon">🏛️</text>
+      <view class="gov-text">
+        <view class="gov-title">国药准字查询官方通道</view>
+        <view class="gov-desc">前往国家药监局官网查询药品批号</view>
+      </view>
+    </view>
+    <text class="gov-arrow">→</text>
+  </view>
+
+  <!-- 常见违规药膏名单 -->
+  <view class="section-title">⚠️ 常见违规药膏名单</view>
+  <view class="risk-disclaimer">以下信息仅供参考，基于公开的药品抽检通告整理。</view>
+  
+  <view class="card risk-item" wx:for="{{riskOintments}}" wx:key="name">
+    <view class="risk-name">{{item.name}}</view>
+    <view class="risk-tag tag tag-red">{{item.risk}}</view>
+    <view class="risk-detail">{{item.detail}}</view>
+  </view>
+
+  <view class="drug-footer-disclaimer">
+    本页内容仅供科普参考，不构成医疗建议。药品使用请遵医嘱。如发现可疑产品，可向当地药品监管部门举报。
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

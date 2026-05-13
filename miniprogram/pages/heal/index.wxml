@@ -1,0 +1,71 @@
+<!-- 疗愈页 - 心理陪伴与情绪舒缓 -->
+<view class="page-container">
+
+  <!-- ===== 1. AI情绪对话入口 ===== -->
+  <view class="card card-purple ai-chat-card" bindtap="goAIChat">
+    <view class="ai-header">
+      <view class="ai-avatar">
+        <text>🤖</text>
+        <view class="ai-status"></view>
+      </view>
+      <view class="ai-info">
+        <view class="ai-name">和"小愈"聊一聊</view>
+        <view class="ai-desc">你的专属情绪倾听者，随时说说心里的困扰</view>
+      </view>
+    </view>
+    <view class="ai-chat-count">
+      <text wx:if="{{chatRemaining > 0}}">今日剩余 {{chatRemaining}} 次对话</text>
+      <text wx:if="{{chatRemaining <= 0}}">今日对话次数已用完 🥺</text>
+    </view>
+    <view class="btn-purple ai-btn">
+      <text>{{chatRemaining > 0 ? '开始对话' : '明天再来'}}</text>
+    </view>
+    <view class="ai-disclaimer">小愈是情绪支持伙伴，不能替代心理医生</view>
+  </view>
+
+  <!-- ===== 2. 呼吸放松练习 ===== -->
+  <view class="card breathe-card" bindtap="goBreathe">
+    <view class="breathe-content">
+      <view class="breathe-icon">🌬️</view>
+      <view class="breathe-text">
+        <view class="breathe-title">5分钟正念呼吸</view>
+        <view class="breathe-desc">跟随引导，放松身心</view>
+      </view>
+    </view>
+    <text class="breathe-arrow">→</text>
+  </view>
+
+  <!-- ===== 3. 疗愈音频列表 ===== -->
+  <view class="section-title">疗愈音频</view>
+  
+  <view class="card audio-card" wx:for="{{audioList}}" wx:key="id" data-id="{{item.id}}" bindtap="playAudio">
+    <view class="audio-info">
+      <view class="audio-icon">{{item.icon}}</view>
+      <view class="audio-text">
+        <view class="audio-title">{{item.title}}</view>
+        <view class="audio-desc">{{item.desc}}</view>
+        <view class="audio-duration">{{item.duration}}</view>
+      </view>
+    </view>
+    <view class="audio-play-btn {{playingId === item.id ? 'playing' : ''}}">
+      <text>{{playingId === item.id ? '⏸' : '▶'}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 4. 心情日记 ===== -->
+  <view class="card diary-card" bindtap="goMoodDiary">
+    <view class="diary-icon">📓</view>
+    <view class="diary-text">
+      <view class="diary-title">记录今天的心情</view>
+      <view class="diary-desc">写下你的感受，存入私密日记本</view>
+    </view>
+    <text class="diary-arrow">→</text>
+  </view>
+
+  <!-- 底部免责 -->
+  <view class="heal-disclaimer">
+    <text>如有严重的焦虑、抑郁情绪，请及时寻求专业心理医生的帮助。紧急情况请拨打心理援助热线：400-161-9995</text>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

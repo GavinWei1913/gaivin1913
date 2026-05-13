@@ -1,0 +1,218 @@
+<!-- 记录页 - 病程管理核心区 -->
+<view class="page-container">
+
+  <!-- ===== 1. 顶部概览卡片 ===== -->
+  <view class="card overview-card">
+    <view class="overview-header">
+      <view class="overview-left">
+        <text class="overview-icon">🌿</text>
+        <text class="overview-title">今日抗炎指数</text>
+      </view>
+      <text class="overview-badge">第{{recordDays}}天</text>
+    </view>
+    
+    <view wx:if="{{!hasTodayRecord}}" class="no-record" bindtap="startQuickRecord">
+      <text class="no-record-text">今天还没有记录，点击记录</text>
+      <text class="no-record-arrow">→</text>
+    </view>
+
+    <view wx:if="{{hasTodayRecord}}" class="today-summary">
+      <view class="anti-inflammatory-score">
+        <text class="score-value">{{antiInflammatoryScore}}</text>
+        <text class="score-label">抗炎指数</text>
+      </view>
+      <view class="today-stats">
+        <view class="stat-item">
+          <text class="stat-emoji">{{itchEmoji}}</text>
+          <text class="stat-label">瘙痒</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-emoji">{{areaEmoji}}</text>
+          <text class="stat-label">皮损</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-emoji">{{dietEmoji}}</text>
+          <text class="stat-label">忌口</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-emoji">{{moodEmoji}}</text>
+          <text class="stat-label">心情</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="continuous-bar">
+      <text class="continuous-text">连续记录 {{continuousDays}} 天</text>
+      <text class="continuous-text">本月已记录 {{monthRecordDays}} 天</text>
+    </view>
+  </view>
+
+  <!-- ===== 🧴🧪 综合习惯打卡快捷入口 ===== -->
+  <view class="card checkin-entry-card" bindtap="goCheckIn">
+    <view class="checkin-entry-left">
+      <text class="checkin-entry-icon">🌿</text>
+      <view class="checkin-entry-text">
+        <text class="checkin-entry-title">日常习惯打卡</text>
+        <text class="checkin-entry-desc">{{checkInStatusText}}</text>
+      </view>
+    </view>
+    <view class="checkin-entry-streak">
+      <view class="streak-row">
+        <text class="streak-icon">🔥</text>
+        <text class="streak-num">{{checkInStreak}}</text>
+        <text class="streak-label">天</text>
+      </view>
+      <view wx:if="{{suppRate > 0 && suppRate < 100}}" class="streak-sub">
+        <text class="streak-supp-text">补剂{{suppRate}}%</text>
+      </view>
+    </view>
+    <view class="checkin-entry-arrow">→</view>
+  </view>
+
+  <!-- ===== 2. 快速记录区 ===== -->
+  <view class="section-title">今日快速记录</view>
+  
+  <!-- 拍照按钮 -->
+  <view class="card photo-card" bindtap="takePhoto">
+    <view class="photo-icon">📸</view>
+    <view class="photo-text">
+      <view class="photo-title">拍摄皮损照片</view>
+      <view class="photo-tip">建议每周同光线同角度拍摄，便于前后对比</view>
+    </view>
+    <view class="photo-arrow">→</view>
+  </view>
+
+  <!-- 快捷记录按钮 -->
+  <view class="card quick-record-card">
+    <view class="quick-grid">
+      <view class="quick-item" bindtap="showItchPicker">
+        <text class="quick-emoji">{{selectedItch.emoji}}</text>
+        <text class="quick-label">瘙痒程度</text>
+        <text class="quick-value">{{selectedItch.label}}</text>
+      </view>
+      <view class="quick-item" bindtap="showAreaPicker">
+        <text class="quick-emoji">{{areaEmoji}}</text>
+        <text class="quick-label">皮损面积</text>
+        <text class="quick-value">{{areaLabel}}</text>
+      </view>
+      <view class="quick-item" bindtap="toggleDiet">
+        <text class="quick-emoji">{{dietEmoji}}</text>
+        <text class="quick-label">忌口情况</text>
+        <text class="quick-value">{{dietLabel}}</text>
+      </view>
+      <view class="quick-item" bindtap="showMoodPicker">
+        <text class="quick-emoji">{{selectedMood.emoji}}</text>
+        <text class="quick-label">心情</text>
+        <text class="quick-value">{{selectedMood.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多记录项 -->
+  <view class="card more-records-card">
+    <view class="more-records-header" bindtap="toggleMoreRecords">
+      <text>更多记录项</text>
+      <text class="toggle-icon {{showMoreRecords ? 'expanded' : ''}}">▾</text>
+    </view>
+    
+    <view class="more-records-body {{showMoreRecords ? '' : 'hidden'}}">
+      <view class="record-row">
+        <text class="record-label">🤒 咽痛/感冒</text>
+        <switch checked="{{hasCold}}" color="#2E7D5B" bindchange="toggleCold" />
+      </view>
+      <view class="record-row">
+        <text class="record-label">🩹 新外伤</text>
+        <switch checked="{{hasInjury}}" color="#2E7D5B" bindchange="toggleInjury" />
+      </view>
+      <view class="record-row record-row-text">
+        <text class="record-label">💊 用药情况</text>
+        <input class="record-input" placeholder="如：他克莫司软膏" value="{{medication}}" bindinput="inputMedication" />
+      </view>
+      <view class="record-row record-row-text">
+        <text class="record-label">🧪 补剂摄入</text>
+        <view class="supplement-checkboxes">
+          <view class="supplement-item {{supplements.includes('维D') ? 'checked' : ''}}" bindtap="toggleSupplement" data-supp="维D">
+            <text>维D</text>
+          </view>
+          <view class="supplement-item {{supplements.includes('鱼油') ? 'checked' : ''}}" bindtap="toggleSupplement" data-supp="鱼油">
+            <text>鱼油</text>
+          </view>
+          <view class="supplement-item {{supplements.includes('益生菌') ? 'checked' : ''}}" bindtap="toggleSupplement" data-supp="益生菌">
+            <text>益生菌</text>
+          </view>
+          <view class="supplement-item {{supplements.includes('姜黄素') ? 'checked' : ''}}" bindtap="toggleSupplement" data-supp="姜黄素">
+            <text>姜黄素</text>
+          </view>
+          <view class="supplement-item {{supplements.includes('锌') ? 'checked' : ''}}" bindtap="toggleSupplement" data-supp="锌">
+            <text>锌</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="record-submit" bindtap="submitRecord">
+        <text>📝 保存今日记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 3. 历史记录入口 ===== -->
+  <view class="card history-entry" bindtap="goHistory">
+    <view class="history-icon">📅</view>
+    <view class="history-text">查看历史记录与趋势</view>
+    <view class="history-arrow">→</view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+
+  <!-- ===== Picker 弹出层 ===== -->
+  <!-- 瘙痒程度选择 -->
+  <view class="picker-overlay {{showItchPicker ? '' : 'hidden'}}" bindtap="hideItchPicker">
+    <view class="picker-dialog" catchtap="stopPropagation">
+      <view class="picker-title">瘙痒程度</view>
+      <view class="picker-options">
+        <view class="picker-option {{selectedItch.value === item.value ? 'active' : ''}}" wx:for="{{itchLevels}}" wx:key="value" data-value="{{item.value}}" bindtap="selectItch">
+          <text class="picker-emoji">{{item.icon}}</text>
+          <text class="picker-label">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="picker-cancel" bindtap="hideItchPicker">取消</view>
+    </view>
+  </view>
+
+  <!-- 心情选择 -->
+  <view class="picker-overlay {{showMoodPicker ? '' : 'hidden'}}" bindtap="hideMoodPicker">
+    <view class="picker-dialog" catchtap="stopPropagation">
+      <view class="picker-title">今天心情怎么样？</view>
+      <view class="picker-options">
+        <view class="picker-option mood-big {{selectedMood.value === item.value ? 'active' : ''}}" wx:for="{{moodLevels}}" wx:key="value" data-value="{{item.value}}" bindtap="selectMood">
+          <text class="picker-emoji-big">{{item.icon}}</text>
+          <text class="picker-label">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="picker-cancel" bindtap="hideMoodPicker">取消</view>
+    </view>
+  </view>
+
+  <!-- 皮损面积选择 -->
+  <view class="picker-overlay {{showAreaPicker ? '' : 'hidden'}}" bindtap="hideAreaPicker">
+    <view class="picker-dialog" catchtap="stopPropagation">
+      <view class="picker-title">皮损面积变化</view>
+      <view class="picker-options">
+        <view class="picker-option {{areaValue === 'decrease' ? 'active' : ''}}" data-value="decrease" bindtap="selectArea">
+          <text class="picker-emoji">✅</text>
+          <text class="picker-label">减少（好转）</text>
+        </view>
+        <view class="picker-option {{areaValue === 'stable' ? 'active' : ''}}" data-value="stable" bindtap="selectArea">
+          <text class="picker-emoji">➖</text>
+          <text class="picker-label">无变化</text>
+        </view>
+        <view class="picker-option {{areaValue === 'increase' ? 'active' : ''}}" data-value="increase" bindtap="selectArea">
+          <text class="picker-emoji">🔴</text>
+          <text class="picker-label">增加（加重）</text>
+        </view>
+      </view>
+      <view class="picker-cancel" bindtap="hideAreaPicker">取消</view>
+    </view>
+  </view>
+
+</view>

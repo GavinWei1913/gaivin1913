@@ -1,0 +1,108 @@
+<!-- 百科首页 -->
+<view class="page-container">
+  
+  <!-- 顶部安全区占位 -->
+  <view class="header-placeholder"></view>
+
+  <!-- ===== 1. 顶部搜索区 ===== -->
+  <view class="search-box">
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="搜一搜，药品、食物、文章" bindinput="onSearchInput" bindconfirm="onSearch" />
+    <view class="drug-btn" bindtap="goDrugKnowledge">
+      <text>药</text>
+    </view>
+  </view>
+
+  <!-- ===== 2. 药品认知入门区 ===== -->
+  <view class="section-title">避开激素陷阱 · 一看就懂</view>
+  <scroll-view class="scroll-x knowledge-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="knowledge-card card" data-id="1" bindtap="goKnowledgeDetail">
+      <view class="knowledge-icon">⚠️</view>
+      <view class="knowledge-title">消字号 vs 国药准字</view>
+      <view class="knowledge-desc">为什么消字号风险高？</view>
+    </view>
+    <view class="knowledge-card card" data-id="2" bindtap="goKnowledgeDetail">
+      <view class="knowledge-icon">📊</view>
+      <view class="knowledge-title">读懂激素分级表</view>
+      <view class="knowledge-desc">强效激素别上脸</view>
+    </view>
+    <view class="knowledge-card card" data-id="3" bindtap="goKnowledgeDetail">
+      <view class="knowledge-icon">🌿</view>
+      <view class="knowledge-title">"纯植物"的真相</view>
+      <view class="knowledge-desc">那些号称一抹就好的坑</view>
+    </view>
+  </scroll-view>
+
+  <!-- ===== 3. 个性化饮食建议区 ===== -->
+  <view class="section-title">你的专属饮食方案</view>
+  
+  <view class="card card-green diet-card" wx:if="{{!userData.dietSurveyCompleted}}" bindtap="goDietQuestionnaire">
+    <view class="diet-guide">
+      <view class="diet-guide-icon">🔬</view>
+      <view class="diet-guide-text">回答5个问题，生成个人饮食红黑榜</view>
+    </view>
+    <view class="btn-outline diet-btn">开始评估</view>
+  </view>
+
+  <view class="card card-green diet-card" wx:if="{{userData.dietSurveyCompleted}}" bindtap="goDietQuestionnaire">
+    <view class="diet-result">
+      <view class="diet-section">
+        <view class="diet-section-title">✅ 建议多吃</view>
+        <view wx:for="{{dietAdvice.eatMore}}" wx:key="index" class="diet-item">{{item}}</view>
+      </view>
+      <view class="diet-divider"></view>
+      <view class="diet-section">
+        <view class="diet-section-title">❌ 建议避开</view>
+        <view wx:for="{{dietAdvice.avoid}}" wx:key="index" class="diet-item diet-avoid">{{item}}</view>
+      </view>
+      <view class="diet-disclaimer">{{dietAdvice.disclaimer}}</view>
+    </view>
+  </view>
+
+  <!-- ===== 4. 饮食速查区 ===== -->
+  <view class="section-title">饮食速查</view>
+  <view class="card diet-tabs-card">
+    <view class="diet-tabs">
+      <view class="diet-tab {{activeDietTab === 'avoid' ? 'active' : ''}}" bindtap="switchDietTab" data-tab="avoid">忌口清单</view>
+      <view class="diet-tab {{activeDietTab === 'recommend' ? 'active' : ''}}" bindtap="switchDietTab" data-tab="recommend">推荐清单</view>
+    </view>
+    <view class="diet-list">
+      <view wx:for="{{activeDietTab === 'avoid' ? avoidFoods : recommendFoods}}" wx:key="index" class="food-item">
+        <view class="food-name">{{item.name}}</view>
+        <view class="food-info">
+          <text wx:if="{{activeDietTab === 'avoid'}}" class="food-reason">{{item.reason}}</text>
+          <text wx:if="{{activeDietTab === 'recommend'}}" class="food-nutrient">{{item.benefit}}</text>
+        </view>
+        <view wx:if="{{activeDietTab === 'recommend'}}" class="food-nutrient-tag">{{item.nutrient}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 5. 文章科普流 ===== -->
+  <view class="section-title">银屑病知识库</view>
+  
+  <view class="category-tabs scroll-x">
+    <view class="category-tab {{activeCategory === '全部' ? 'active' : ''}}" bindtap="switchCategory" data-cat="全部">全部</view>
+    <view class="category-tab {{activeCategory === '病因与诱因' ? 'active' : ''}}" bindtap="switchCategory" data-cat="病因与诱因">病因与诱因</view>
+    <view class="category-tab {{activeCategory === '治疗手段' ? 'active' : ''}}" bindtap="switchCategory" data-cat="治疗手段">治疗手段</view>
+    <view class="category-tab {{activeCategory === '自愈管理' ? 'active' : ''}}" bindtap="switchCategory" data-cat="自愈管理">自愈管理</view>
+    <view class="category-tab {{activeCategory === '情绪调节' ? 'active' : ''}}" bindtap="switchCategory" data-cat="情绪调节">情绪调节</view>
+    <view class="category-tab {{activeCategory === '饮食营养' ? 'active' : ''}}" bindtap="switchCategory" data-cat="饮食营养">饮食营养</view>
+  </view>
+
+  <view class="article-list">
+    <view class="article-card card" wx:for="{{filteredArticles}}" wx:key="id" data-id="{{item.id}}" bindtap="goArticleDetail">
+      <image class="article-cover" src="{{item.cover}}" mode="aspectFill" lazy-load />
+      <view class="article-content">
+        <view class="article-category tag tag-green">{{item.category}}</view>
+        <view class="article-title">{{item.title}}</view>
+        <view class="article-summary">{{item.summary}}</view>
+        <view class="article-meta">
+          <text class="article-reads">👁️ {{item.readCount}} 阅读</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

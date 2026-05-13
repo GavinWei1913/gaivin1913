@@ -1,0 +1,71 @@
+<!-- AI情绪对话 - 小愈 -->
+<view class="chat-container">
+  
+  <!-- 顶部 -->
+  <view class="chat-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <view class="chat-header-info">
+      <view class="chat-avatar">🤖</view>
+      <view class="chat-partner">
+        <text class="chat-name">小愈</text>
+        <text class="chat-status online">在线</text>
+      </view>
+    </view>
+    <view class="chat-remaining" bindtap="showChatInfo">
+      <text>{{remaining}}/{{limit}}</text>
+    </view>
+  </view>
+
+  <!-- 隐私提示 -->
+  <view class="privacy-notice">🔒 所有对话内容加密，不对外泄露</view>
+
+  <!-- 对话列表 -->
+  <scroll-view class="chat-messages" scroll-y scroll-into-view="{{scrollToId}}" scroll-with-animation>
+    <view class="message-list">
+      <!-- AI首条消息 -->
+      <view class="message-row ai">
+        <view class="message-avatar">🤖</view>
+        <view class="message-bubble ai-bubble">
+          <text>Hi，我是小愈。最近皮损有反复吗？还是心里觉得有点累？都可以和我说说。</text>
+          <view class="message-disclaimer">小愈是情绪支持伙伴，不能替代心理医生</view>
+        </view>
+      </view>
+
+      <!-- 历史消息 -->
+      <view class="message-row {{msg.role === 'ai' ? 'ai' : 'user'}}" wx:for="{{messages}}" wx:key="id" id="msg-{{msg.id}}">
+        <view class="message-avatar" wx:if="{{msg.role === 'ai'}}">🤖</view>
+        <view class="message-bubble {{msg.role === 'ai' ? 'ai-bubble' : 'user-bubble'}}">
+          <text>{{msg.content}}</text>
+          <view class="message-disclaimer" wx:if="{{msg.role === 'ai'}}">小愈是情绪支持伙伴，不能替代心理医生</view>
+        </view>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="message-row ai" wx:if="{{isLoading}}">
+        <view class="message-avatar">🤖</view>
+        <view class="message-bubble ai-bubble typing">
+          <text class="typing-dot">.</text>
+          <text class="typing-dot">.</text>
+          <text class="typing-dot">.</text>
+        </view>
+      </view>
+
+      <view id="scroll-bottom"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区 -->
+  <view class="chat-input-area">
+    <view class="chat-input-box">
+      <input class="chat-input" placeholder="说说你的感受..." value="{{inputText}}" bindinput="onInput" bindconfirm="sendMessage" maxlength="500" />
+      <view class="chat-send-btn {{inputText.trim() ? 'active' : ''}}" bindtap="sendMessage">
+        <text>发送</text>
+      </view>
+    </view>
+    <view class="chat-tools">
+      <text class="tool-btn" bindtap="switchVoice">🎤</text>
+      <text class="tool-count">{{inputText.length}}/500</text>
+    </view>
+  </view>
+
+</view>

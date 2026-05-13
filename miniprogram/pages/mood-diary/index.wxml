@@ -1,0 +1,49 @@
+<!-- 心情日记 -->
+<view class="page-container">
+  
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">← 返回</view>
+    <text class="page-title">心情日记</text>
+  </view>
+
+  <!-- 写日记 -->
+  <view class="card diary-edit-card">
+    <view class="diary-date">{{todayDate}} {{weekDay}}</view>
+    
+    <view class="mood-selector">
+      <text class="mood-option {{selectedMood === 'sunny' ? 'active' : ''}}" bindtap="selectMood" data-mood="sunny">☀️</text>
+      <text class="mood-option {{selectedMood === 'cloudy' ? 'active' : ''}}" bindtap="selectMood" data-mood="cloudy">⛅</text>
+      <text class="mood-option {{selectedMood === 'rainy' ? 'active' : ''}}" bindtap="selectMood" data-mood="rainy">🌧️</text>
+      <text class="mood-option {{selectedMood === 'storm' ? 'active' : ''}}" bindtap="selectMood" data-mood="storm">⛈️</text>
+      <text class="mood-option {{selectedMood === 'rainbow' ? 'active' : ''}}" bindtap="selectMood" data-mood="rainbow">🌈</text>
+    </view>
+
+    <textarea class="diary-textarea" placeholder="写下你今天的感受、想法、或任何想记录的事..." maxlength="2000" value="{{diaryContent}}" bindinput="inputDiary"></textarea>
+    
+    <view class="diary-footer">
+      <text class="diary-char-count">{{diaryContent.length}}/2000</text>
+      <view class="btn-primary" bindtap="saveDiary">
+        <text>{{editingDiaryId ? '更新' : '保存'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史日记列表 -->
+  <view class="section-title">📖 我的日记</view>
+  
+  <view class="diary-list">
+    <view class="card diary-history-item" wx:for="{{diaryList}}" wx:key="id" data-id="{{item.id}}" bindtap="editDiary">
+      <view class="diary-history-header">
+        <text class="diary-history-mood">{{item.mood}}</text>
+        <text class="diary-history-date">{{item.date}}</text>
+      </view>
+      <view class="diary-history-content">{{item.content}}</view>
+    </view>
+    <view class="empty-state" wx:if="{{diaryList.length === 0}}">
+      <text class="empty-icon">📓</text>
+      <text class="empty-text">还没有日记，记录今天的心情吧</text>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>
