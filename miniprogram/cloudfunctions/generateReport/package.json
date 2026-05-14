@@ -1,9 +1,0 @@
-{
-  "name": "generateReport",
-  "version": "1.0.0",
-  "description": "生成健康报告PDF",
-  "main": "index.js",
-  "dependencies": {
-    "pdfkit": "^0.13.0"
-  }
-}
